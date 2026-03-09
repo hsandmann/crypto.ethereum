@@ -85,7 +85,7 @@ services:
       # - --genesis-beacon-api-url=https://sync.invis.tools
       - --checkpoint-sync-url=https://beaconstate.info
       - --genesis-beacon-api-url=https://beaconstate.info
-      - --suggested-fee-recipient=${ETHEREUM_WALLET}
+      - --suggested-fee-recipient=${ETHEREUM_WALLET:-0x0336fE9f1AcAC4ecf3a09e6C6dEcef8B554098dF}
       - --p2p-host-ip=${PUBLIC_IP}
 
 

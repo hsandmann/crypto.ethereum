@@ -10,7 +10,7 @@ Create the environment variables in the `.env` file:
 
 ```bash
 # .env
-ETHEREUM_WALLET=0x3383e567937092DEE6De4cf558c7A9A048806384 # replace with your Ethereum wallet address
+ETHEREUM_WALLET=0x0336fE9f1AcAC4ecf3a09e6C6dEcef8B554098dF # replace with your Ethereum wallet address
 PUBLIC_IP=123.123.123.123 # replace with your public IP address to allow other nodes to connect to your node
 ```
 
@@ -26,7 +26,9 @@ This command will pull the necessary Docker images, create the containers for bo
 
 ## 3. Contributing
 
-[![Ethereum Badge](https://img.shields.io/badge/ETH-0x3383e567937092DEE6De4cf558c7A9A048806384-blue?logo=ethereum&style=flat)](https://etherscan.io/address/0x3383e567937092DEE6De4cf558c7A9A048806384)
+[<img src="https://img.shields.io/badge/Donate%20ETH-Copy-informational?logo=ethereum&style=flat-square" alt="Click to copy ETH Address">](https://etherscan.io/address/0x0336fE9f1AcAC4ecf3a09e6C6dEcef8B554098dF)
+
+![](0x0336fE9f1AcAC4ecf3a09e6C6dEcef8B554098dF.png)
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/sandmann)
 
