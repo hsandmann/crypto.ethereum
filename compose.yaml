@@ -1,0 +1,94 @@
+name: crypto-eth-prys
+
+services:
+
+  geth:
+    image: ethereum/client-go:stable
+    hostname: geth
+    container_name: geth
+    restart: unless-stopped
+    ports:
+      - 30303:30303 # used by P2P protocol
+      - 30303:30303/udp # used by P2P protocol
+      # - 8545:8545 # used by the HTTP based JSON RPC API
+      # - 8546:8546 # used by the WebSocket based JSON RPC API
+      # - 8551:8551 # used by the GraphQL API
+    volumes:
+      - geth-data:/root/.ethereum
+    stop_signal: SIGINT
+    stop_grace_period: 1m
+    healthcheck:
+      test: [ "CMD-SHELL", "geth attach --exec eth.blockNumber" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command:
+      - --mainnet
+      - --rpc.allow-unprotected-txs
+      - --snapshot=false
+      - --gcmode=archive
+      - --http
+      - --http.api=eth,net,web3,engine,admin
+      - --http.addr=0.0.0.0
+      - --http.vhosts=*
+      - --http.corsdomain=*
+      - --ws
+      - --ws.origins=*
+      - --ws.addr=0.0.0.0
+      - --ws.api=eth,net,web3
+      - --graphql
+      - --graphql.corsdomain=*
+      - --graphql.vhosts=*
+      - --authrpc.addr=0.0.0.0
+      - --authrpc.vhosts=*
+      - --authrpc.jwtsecret=/root/.ethereum/jwtsecret
+      - --authrpc.port=8551
+      - --cache=42738   # should be 34% of RAM
+      # - --nat extip:${PUBLIC_IP}
+      # - --ethstats=<user_name>:<password>@<netstat_ip>:<netstat_port>  
+
+  prysm:
+    image: gcr.io/offchainlabs/prysm/beacon-chain:stable
+    hostname: prysm-beacon
+    container_name: prysm-beacon
+    restart: unless-stopped
+    stop_grace_period: 1m
+    volumes:
+      - prysm-data:/data
+      - geth-data:/geth
+    depends_on:
+      geth:
+        condition: service_healthy
+    ports:
+      - 3500:3500 # gRPC Gateway
+      - 4000:4000 # RPC
+      - 12000:12000/udp # Discovery
+      - 13000:13000 # LibP2P
+    command:
+      - --mainnet
+      - --accept-terms-of-use
+      - --datadir=/data
+      - --monitoring-host=0.0.0.0
+      - --rpc-host=0.0.0.0
+      # - --http-host=0.0.0.0
+      # - --execution-endpoint=http://geth:8545
+      - --execution-endpoint=http://geth:8551
+      - --jwt-secret=/geth/jwtsecret
+      - --rpc-host=0.0.0.0
+      - --rpc-port=4000
+      - --grpc-gateway-corsdomain=*
+      - --grpc-gateway-host=0.0.0.0
+      - --grpc-gateway-port=3500
+      - --min-sync-peers=7
+      # - --historical-slasher-node=true
+      # - --checkpoint-sync-url=https://sync.invis.tools
+      # - --genesis-beacon-api-url=https://sync.invis.tools
+      - --checkpoint-sync-url=https://beaconstate.info
+      - --genesis-beacon-api-url=https://beaconstate.info
+      - --suggested-fee-recipient=${ETHEREUM_WALLET}
+      - --p2p-host-ip=${PUBLIC_IP}
+
+
+volumes:
+  geth-data:
+  prysm-data:
