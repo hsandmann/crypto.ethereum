@@ -54,11 +54,11 @@ This will return a JSON response indicating whether the node is currently syncin
 ```json
 {
         "data": {
-                "head_slot":"13855336",
-                "sync_distance":"0",
-                "is_syncing":false,
-                "is_optimistic":false,
-                "el_offline":false
+                "head_slot": "13855336",
+                "sync_distance": "0",
+                "is_syncing": false,
+                "is_optimistic": false,
+                "el_offline": false
         }
 }
 ```
